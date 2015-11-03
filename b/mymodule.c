@@ -1,6 +1,7 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/proc_fs.h>
+#include <linux/init.h>
 
 static struct proc_dir_entry *dir;
 
@@ -13,7 +14,7 @@ int procfile_read(char *buffer, char **buffer_location, off_t offset,
 	}
 }
 
-int init_module(void){
+static int __init heisann(void){
 	printk(KERN_INFO "Proc Entry! \n");
 
 	dir = create_proc_entry("asd", 0644, NULL);
@@ -22,7 +23,11 @@ int init_module(void){
 	return 0;
 }
 
-void cleanup_module(void){
+static void __exit hei(void){
 	printk(KERN_INFO "Goodbye World! \n");
 	remove_proc_entry("asd", NULL);
+	return;
 }
+
+module_init(heisann);
+module_exit(hei);
